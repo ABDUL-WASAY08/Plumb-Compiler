@@ -1,0 +1,234 @@
+Plumb Developer Dashboard (Frontend)
+
+Welcome to the frontend repository of Plumb, a lightweight Domain-Specific Language (DSL) designed for describing simple data pipelines with visual compiler diagnostics and real-time telemetry.
+
+This React-based web dashboard (built with Vite and styled with Tailwind CSS) allows developers to write Plumb code, compile it via the backend API, inspect the AST (Abstract Syntax Tree), view token distribution analytics, and examine generated JavaScript code in a clean, professional, developer-first interface.
+
+🖥️ Frontend Architecture, Screens & Components
+
+The dashboard is structured as a single-page application with a tabbed navigation architecture. Below is the comprehensive breakdown of all screens, modular components, and their specific interactive features.
+
+1. Navigation & Global Layout
+
+Header / Top Navigation Bar (Header.jsx)
+
+App Title & Subtitle: Displays "Plumb" alongside "Developer Dashboard".
+
+Live Connection Status: Features a live pulsing green badge reading "Backend connected" (clickable/hoverable to display connection latency or endpoint status).
+
+Navigation Tabs (NavigationTabs.jsx): Allows seamless switching between primary views:
+
+Compiler (Active default view)
+
+AST Viewer
+
+Metrics
+
+Settings
+
+2. Screen 1: The Compiler Dashboard (CompilerScreen.jsx)
+
+This is the primary workspace where developers write and compile their .plb pipeline code and review immediate telemetry and compilation outputs. It is split into distinct functional panels:
+
+A. Code Editor Panel (CodeEditor.jsx)
+
+Header: Displays file identifier (main.plb).
+
+Text Area / Editor: Line-numbered text editor pre-loaded with boilerplate Plumb code:
+
+pipeline process_data
+    read "users.csv"
+    filter age > 18
+    transform name
+    output "result.csv"
+
+
+Action Buttons:
+
+Compile Button (CompileButton.jsx): Primary indigo-filled button with hover states. Dispatches the code to the backend API.
+
+Clear Button (ClearButton.jsx): Secondary outline button to reset the code editor input.
+
+B. Compilation Metrics Panel (MetricsPanel.jsx)
+
+A grid of 6 interactive metric cards displaying real-time telemetry upon compilation:
+
+Compile time: e.g., 24 ms
+
+Tokens: e.g., 12
+
+AST nodes: e.g., 9
+
+Errors: e.g., 0
+
+Warnings: e.g., 0
+
+Status: Success (Green status badge)
+
+C. Token Distribution Breakdown (TokenDistribution.jsx)
+
+Interactive horizontal progress bars and percentage distributions categorized by token types:
+
+Keywords: 5 (41.7%)
+
+Identifiers: 3 (25.0%)
+
+Strings: 2 (16.7%)
+
+Operators: 1 (8.3%)
+
+Numbers: 1 (8.3%)
+
+D. AST Viewer Panel (ASTViewer.jsx)
+
+Expandable/collapsible hierarchical tree view representing the parsed syntax tree nodes:
+
+Pipeline: process_data
+├── Read
+│   └── "users.csv"
+├── Filter
+│   └── age > 18
+├── Transform
+│   └── name
+└── Output
+    └── "result.csv"
+
+
+E. Diagnostics Panel (DiagnosticsPanel.jsx)
+
+Success summary container (✓ Compilation successful) or detailed error cards showing line numbers, column numbers, explanations, and autocomplete suggestions (e.g., "Did you mean 'filter'?").
+
+F. Generated Code Panel (GeneratedCode.jsx)
+
+Displays the target language tag (Target: JavaScript).
+
+Code display block showing the transpiled JavaScript output (readCSV, .filter(), .map(), writeCSV) with a quick-copy icon button.
+
+3. Screen 2: Dedicated AST Viewer Tab (ASTTabScreen.jsx)
+
+Provides an expanded, full-screen interactive view of the Abstract Syntax Tree.
+
+Allows zooming, node collapsing/expanding, and inspection of node metadata (such as node type, child count, and token spans).
+
+4. Screen 3: Metrics & Telemetry Tab (MetricsTabScreen.jsx)
+
+Deep-dive analytics screen showing historical compilation performance metrics.
+
+Visual charts tracking compilation duration trends over multiple runs and comprehensive token type distribution graphs.
+
+5. Screen 4: Settings Tab (SettingsScreen.jsx)
+
+Configuration panel for developer preferences.
+
+Options include toggling dark/light theme, configuring custom Backend API base URLs (VITE_API_BASE_URL), and adjusting compiler strictness flags.
+
+🛠️ Technology Stack
+
+Build Tool & Bundler: Vite
+
+Frontend Library: React.js (Functional components with hooks)
+
+Styling & Design System: Tailwind CSS
+
+Icons: Lucide React / SVG Icon Set
+
+HTTP Client: Fetch API / Axios
+
+📦 Project Directory Structure
+
+plumb-frontend/
+├── public/                  # Static assets and favicons
+├── src/
+│   ├── components/
+│   │   ├── Header.jsx       # Navigation header & connection status
+│   │   ├── Tabs.jsx         # Tab switching controller
+│   │   ├── CodeEditor.jsx   # Plumb script editor with line numbers
+│   │   ├── MetricsGrid.jsx  # Telemetry summary cards
+│   │   ├── TokenChart.jsx   # Token distribution progress bars
+│   │   ├── ASTViewer.jsx    # Hierarchical tree viewer component
+│   │   ├── Diagnostics.jsx  # Error/warning/success reporting box
+│   │   └── GeneratedCode.jsx# Transpiled JavaScript output viewer
+│   ├── screens/
+│   │   ├── CompilerScreen.jsx # Main unified dashboard view
+│   │   ├── ASTScreen.jsx      # Dedicated AST inspection view
+│   │   ├── MetricsScreen.jsx  # Telemetry analytics view
+│   │   └── SettingsScreen.jsx # App configuration view
+│   ├── App.jsx              # Main routing and global state manager
+│   ├── index.css            # Tailwind directives and custom styles
+│   └── main.jsx             # Vite application entry point
+├── index.html               # Root HTML file
+├── package.json             # Vite scripts and dependencies
+├── tailwind.config.js       # Tailwind CSS theme configuration
+├── vite.config.js           # Vite bundler configuration
+└── README.md                # Frontend documentation
+
+
+⚙️ Getting Started & Installation
+
+Follow these steps to run the Vite frontend development server locally:
+
+Prerequisites
+
+Node.js (v18+ recommended)
+
+npm, yarn, or pnpm
+
+1. Clone the Repository
+
+git clone https://github.com/your-username/plumb.git
+cd plumb/frontend
+
+
+2. Install Dependencies
+
+npm install
+
+
+3. Configure Environment Variables
+
+Create a .env file in the root of the frontend directory. Vite requires environment variables to use the VITE_ prefix:
+
+VITE_API_BASE_URL=http://localhost:5000/api
+
+
+4. Run the Development Server
+
+Start the Vite development server with HMR:
+
+npm run dev
+
+
+Open the provided local URL (typically http://localhost:5173) in your browser.
+
+5. Build for Production
+
+To generate an optimized production build:
+
+npm run build
+
+
+🔌 Backend API Integration Contract
+
+The frontend posts user-authored Plumb scripts to the backend API:
+
+Endpoint: POST /api/compile
+
+Request Payload (JSON):
+
+{
+  "code": "pipeline process_data\n    read \"users.csv\"\n    filter age > 18\n    output \"result.csv\""
+}
+
+
+Response Payload (JSON):
+
+{
+  "status": "success",
+  "compilationTime": 24,
+  "tokenCount": 12,
+  "astNodes": 9,
+  "errors": 0,
+  "warnings": 0,
+  "astTree": { ... },
+  "generatedCode": "const data = readCSV(\"users.csv\");\nconst filtered = data.filter(r => r.age > 18);\nwriteCSV(filtered, \"result.csv\");"
+}

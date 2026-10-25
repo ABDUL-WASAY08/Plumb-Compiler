@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-zinc-100 font-sans text-zinc-800 antialiased dark:bg-zinc-950 dark:text-zinc-200;
+  }
+
+  /* Ambient violet glow behind the whole app in dark mode. */
+  html.dark body {
+    background-image:
+      radial-gradient(55rem 35rem at 12% -8%, rgba(139, 92, 246, 0.16), transparent 60%),
+      radial-gradient(45rem 30rem at 92% -4%, rgba(217, 70, 239, 0.12), transparent 58%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-accent-500/30;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent-500/60 ring-offset-2 ring-offset-white dark:ring-offset-zinc-950;
+  }
+}
+
+@layer components {
+  /* Glassy surface used for every panel. */
+  .panel {
+    @apply rounded-2xl border border-zinc-200/80 bg-white/80 shadow-sm backdrop-blur-xl transition-colors duration-300 dark:border-white/[0.08] dark:bg-white/[0.03];
+  }
+
+  /* Opt-in hover elevation for interactive cards. */
+  .card-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-accent-500/50 hover:shadow-xl hover:shadow-accent-500/10;
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between gap-3 border-b border-zinc-200/80 px-4 py-3 dark:border-white/[0.07];
+  }
+
+  .panel-title {
+    @apply flex items-center gap-2 text-sm font-semibold text-zinc-700 dark:text-zinc-200;
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-zinc-100/80 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-zinc-600 dark:border-white/10 dark:bg-white/5 dark:text-zinc-300;
+  }
+
+  .tag-accent {
+    @apply border-accent-500/40 bg-accent-500/10 text-accent-700 dark:text-accent-300;
+  }
+
+  .tag-warn {
+    @apply border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-400;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full border border-zinc-300 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:border-white/10 dark:text-zinc-400;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100;
+  }
+
+  /* Gradient primary button with a lifted, glowing hover state. */
+  .btn-primary {
+    @apply bg-brand-gradient bg-[length:200%_200%] text-white shadow-lg shadow-accent-500/25 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent-500/40 hover:brightness-110;
+    animation: gradient-pan 6s ease infinite;
+  }
+
+  .btn-outline {
+    @apply border border-zinc-300 bg-transparent text-zinc-700 hover:border-accent-500 hover:bg-accent-500/10 hover:text-accent-700 dark:border-white/10 dark:text-zinc-200 dark:hover:border-accent-500 dark:hover:text-accent-300;
+  }
+
+  .btn-ghost {
+    @apply text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-zinc-100;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-zinc-300 bg-white/80 px-3 py-2 text-sm text-zinc-800 outline-none transition-colors placeholder:text-zinc-400 focus:border-accent-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:placeholder:text-zinc-500;
+  }
+
+  .label {
+    @apply text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400;
+  }
+
+  /* Gradient wordmarks / headings. */
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-600 to-fuchsia-600 bg-clip-text text-transparent dark:from-accent-400 dark:to-fuchsia-400;
+  }
+}
+
+@layer utilities {
+  /* Stagger helpers — pair with animate-fade-up. */
+  .delay-1 { animation-delay: 0.06s; }
+  .delay-2 { animation-delay: 0.12s; }
+  .delay-3 { animation-delay: 0.18s; }
+  .delay-4 { animation-delay: 0.24s; }
+  .delay-5 { animation-delay: 0.3s; }
+  .delay-6 { animation-delay: 0.36s; }
+  .delay-7 { animation-delay: 0.42s; }
+  .delay-8 { animation-delay: 0.48s; }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(139 92 246 / 0.4) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(161 161 170 / 0.4);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(139 92 246 / 0.5);
+  }
+}
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

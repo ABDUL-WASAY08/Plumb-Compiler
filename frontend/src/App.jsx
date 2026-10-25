@@ -2,18 +2,18 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Header from './components/Header.jsx'
 import SidebarNavigation from './components/SidebarNavigation.jsx'
 import ASTScreen from './screens/ASTScreen.jsx'
-import AboutScreen from './screens/AboutScreen.jsx'
 import CompilerScreen from './screens/CompilerScreen.jsx'
 import MetricsScreen from './screens/MetricsScreen.jsx'
 import SettingsScreen from './screens/SettingsScreen.jsx'
+import AboutScreen from './screens/About.jsx'
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-zinc-100 text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100">
-      <Header />
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <SidebarNavigation />
-        <main className="min-w-0">
+    <div className="flex min-h-screen flex-col bg-white text-zinc-900 lg:flex-row">
+      <SidebarNavigation />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Header />
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
           <Routes>
             <Route path="/" element={<CompilerScreen />} />
             <Route path="/ast" element={<ASTScreen />} />

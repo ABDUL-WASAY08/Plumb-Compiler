@@ -9,27 +9,27 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       colors: {
-        // Rebranded accent: violet. Semantic colours below stay meaningful.
+        // Accent: blue. Semantic colours below stay meaningful.
         accent: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
-          800: '#5b21b6',
-          900: '#4c1d95',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
         },
       },
       boxShadow: {
-        glow: '0 0 14px rgba(139, 92, 246, 0.45)',
-        'glow-sm': '0 0 8px rgba(139, 92, 246, 0.35)',
-        'glow-lg': '0 0 44px rgba(139, 92, 246, 0.28)',
+        glow: '0 0 14px rgba(37, 99, 235, 0.45)',
+        'glow-sm': '0 0 8px rgba(37, 99, 235, 0.35)',
+        'glow-lg': '0 0 44px rgba(37, 99, 235, 0.28)',
       },
       backgroundImage: {
-        'brand-gradient': 'linear-gradient(120deg, #8b5cf6, #d946ef, #8b5cf6)',
+        'brand-gradient': 'linear-gradient(120deg, #1e40af, #3b82f6, #1e40af)',
       },
       keyframes: {
         'pulse-ring': {

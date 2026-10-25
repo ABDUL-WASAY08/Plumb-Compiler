@@ -8,35 +8,25 @@
     scroll-behavior: smooth;
   }
 
-  html.dark {
-    color-scheme: dark;
-  }
-
   body {
-    @apply bg-zinc-100 font-sans text-zinc-800 antialiased dark:bg-zinc-950 dark:text-zinc-200;
-  }
-
-  /* Ambient violet glow behind the whole app in dark mode. */
-  html.dark body {
-    background-image:
-      radial-gradient(55rem 35rem at 12% -8%, rgba(139, 92, 246, 0.16), transparent 60%),
-      radial-gradient(45rem 30rem at 92% -4%, rgba(217, 70, 239, 0.12), transparent 58%);
+    @apply bg-white font-sans text-zinc-900 antialiased;
+    background-image: radial-gradient(65rem 32rem at 50% -12%, rgba(37, 99, 235, 0.08), transparent 70%);
     background-attachment: fixed;
   }
 
   ::selection {
-    @apply bg-accent-500/30;
+    @apply bg-accent-500/25;
   }
 
   *:focus-visible {
-    @apply outline-none ring-2 ring-accent-500/60 ring-offset-2 ring-offset-white dark:ring-offset-zinc-950;
+    @apply outline-none ring-2 ring-accent-500/60 ring-offset-2 ring-offset-white;
   }
 }
 
 @layer components {
-  /* Glassy surface used for every panel. */
+  /* Clean surface used for every panel. */
   .panel {
-    @apply rounded-2xl border border-zinc-200/80 bg-white/80 shadow-sm backdrop-blur-xl transition-colors duration-300 dark:border-white/[0.08] dark:bg-white/[0.03];
+    @apply rounded-2xl border border-zinc-200 bg-white shadow-sm transition-colors duration-300;
   }
 
   /* Opt-in hover elevation for interactive cards. */
@@ -45,27 +35,27 @@
   }
 
   .panel-header {
-    @apply flex items-center justify-between gap-3 border-b border-zinc-200/80 px-4 py-3 dark:border-white/[0.07];
+    @apply flex items-center justify-between gap-3 border-b border-zinc-200 px-4 py-3;
   }
 
   .panel-title {
-    @apply flex items-center gap-2 text-sm font-semibold text-zinc-700 dark:text-zinc-200;
+    @apply flex items-center gap-2 text-sm font-semibold text-zinc-800;
   }
 
   .tag {
-    @apply inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-zinc-100/80 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-zinc-600 dark:border-white/10 dark:bg-white/5 dark:text-zinc-300;
+    @apply inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-zinc-600;
   }
 
   .tag-accent {
-    @apply border-accent-500/40 bg-accent-500/10 text-accent-700 dark:text-accent-300;
+    @apply border-accent-500/40 bg-accent-500/10 text-accent-700;
   }
 
   .tag-warn {
-    @apply border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-400;
+    @apply border-amber-500/40 bg-amber-500/10 text-amber-700;
   }
 
   .badge {
-    @apply inline-flex items-center gap-1 rounded-full border border-zinc-300 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:border-white/10 dark:text-zinc-400;
+    @apply inline-flex items-center gap-1 rounded-full border border-zinc-300 px-2 py-0.5 text-xs font-medium text-zinc-600;
   }
 
   .btn {
@@ -79,24 +69,24 @@
   }
 
   .btn-outline {
-    @apply border border-zinc-300 bg-transparent text-zinc-700 hover:border-accent-500 hover:bg-accent-500/10 hover:text-accent-700 dark:border-white/10 dark:text-zinc-200 dark:hover:border-accent-500 dark:hover:text-accent-300;
+    @apply border border-zinc-300 bg-transparent text-zinc-700 hover:border-accent-500 hover:bg-accent-500/10 hover:text-accent-700;
   }
 
   .btn-ghost {
-    @apply text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-zinc-100;
+    @apply text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900;
   }
 
   .input {
-    @apply w-full rounded-lg border border-zinc-300 bg-white/80 px-3 py-2 text-sm text-zinc-800 outline-none transition-colors placeholder:text-zinc-400 focus:border-accent-500 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:placeholder:text-zinc-500;
+    @apply w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-800 outline-none transition-colors placeholder:text-zinc-400 focus:border-accent-500;
   }
 
   .label {
-    @apply text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400;
+    @apply text-xs font-medium uppercase tracking-wide text-zinc-500;
   }
 
   /* Gradient wordmarks / headings. */
   .text-gradient {
-    @apply bg-gradient-to-r from-accent-600 to-fuchsia-600 bg-clip-text text-transparent dark:from-accent-400 dark:to-fuchsia-400;
+    @apply bg-gradient-to-r from-accent-600 to-sky-500 bg-clip-text text-transparent;
   }
 }
 
@@ -113,7 +103,7 @@
 
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: rgb(139 92 246 / 0.4) transparent;
+    scrollbar-color: rgb(37 99 235 / 0.4) transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -133,7 +123,7 @@
   }
 
   .scrollbar-thin:hover::-webkit-scrollbar-thumb {
-    background-color: rgb(139 92 246 / 0.5);
+    background-color: rgb(37 99 235 / 0.5);
   }
 }
 

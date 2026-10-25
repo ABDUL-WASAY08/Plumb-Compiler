@@ -1,0 +1,17 @@
+plugins {
+    id: 'java'
+}
+group 'com.plumb'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation 'de.jflex:jflex:1.9.1'
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}

@@ -1,17 +1,79 @@
 plugins {
-    id: 'java'
+    id 'java'
+    id 'application'
 }
-group 'com.plumb'
-version '1.0-SNAPSHOT'
+
+group = 'com.plumb'
+version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
+
 dependencies {
     implementation 'de.jflex:jflex:1.9.1'
 }
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
+
+// ---------------------------------------------------------------------------
+// 1. Where the generated lexer goes (a build artifact, not checked in).
+// ---------------------------------------------------------------------------
+def generatedLexerDir = layout.buildDirectory.dir('generated/jflex/java')
+
+// ---------------------------------------------------------------------------
+// 2. generateLexer: plumb.jflex  ->  PlumbLexer.java
+// ---------------------------------------------------------------------------
+tasks.register('generateLexer', JavaExec) {
+    group = 'build'
+    description = 'Generates PlumbLexer.java from src/main/Jflex/plumb.jflex'
+
+    // Re-run only when the grammar changes.
+    inputs.file('src/main/Jflex/plumb.jflex')
+    outputs.dir(generatedLexerDir)
+
+    classpath = configurations.runtimeClasspath
+    mainClass = 'jflex.Main'
+    args = ['-d', generatedLexerDir.get().asFile.absolutePath, 'src/main/Jflex/plumb.jflex']
+
+    doFirst {
+        generatedLexerDir.get().asFile.mkdirs()
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 3. Compile: hand-written Java (src/main/java) + the generated lexer.
+// ---------------------------------------------------------------------------
+sourceSets {
+    main {
+        java {
+            srcDir generatedLexerDir
+        }
+    }
+}
+
+// compileJava must wait for the lexer to be generated first.
+tasks.named('compileJava') {
+    dependsOn 'generateLexer'
+}
+
+// ---------------------------------------------------------------------------
+// 4. Optional: copy dependency jars into lib/ for manual javac / java -cp usage.
+// ---------------------------------------------------------------------------
+tasks.register('copyLibs', Copy) {
+    group = 'build'
+    description = 'Copies dependency jars into lib/ for manual commands'
+    from configurations.runtimeClasspath
+    into layout.projectDirectory.dir('lib')
+}
+
+// ---------------------------------------------------------------------------
+// 5. `gradle run --args="<plumb code>"` runs LexerRunner directly.
+// ---------------------------------------------------------------------------
+application {
+    mainClass = 'LexerRunner'
 }

@@ -228,21 +228,7 @@ export default function AboutScreen() {
   };
 
   return (
-    <div className="space-y-10">
-      {/* Header */}
-      <div className="space-y-3 border-b border-zinc-200 pb-6">
-        <span className="badge border-blue-200 bg-blue-50 text-blue-700">Learning hub</span>
-        <h1 className="text-3xl font-extrabold text-zinc-900 sm:text-4xl">
-          How the Plumb Compiler Works
-        </h1>
-        <p className="max-w-3xl text-base text-zinc-600">
-          A compiler turns the code you write into code the computer can run, in small steps. Start
-          with <strong>Pipeline</strong> to see the whole journey, then open <strong>Lexer</strong> to
-          learn how the very first step actually works.
-        </p>
-      </div>
-
-     
+    <div className="space-y-8">
       <nav aria-label="About sections" className="flex w-fit gap-1 rounded-xl border border-zinc-200 bg-white p-1">
         {TABS.map((t) => (
           <button

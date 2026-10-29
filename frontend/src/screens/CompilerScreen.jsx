@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '../api/axios';
+import { showToast } from '../utils/notifications';
 
 const DEFAULT_PLUMB_CODE = `pipeline process_data
     read "users.csv"
@@ -29,14 +30,20 @@ export default function CompilerScreen() {
     setError('');
 
     try {
-     
+
       const response = await api.post('/api/tokenize', { code });
-      setTokens(response.data.tokens || []);
+      const nextTokens = response.data.tokens || [];
+
+      setTokens(nextTokens);
       setCompiled(true);
+      showToast.success(`Lexed ${nextTokens.length} token(s)`);
     } catch (err) {
+      const message = err.response?.data?.error || err.message || 'Failed to tokenize code';
+
       setTokens([]);
       setCompiled(false);
-      setError(err.response?.data?.error || err.message || 'Failed to tokenize code');
+      setError(message);
+      showToast.error(message);
     } finally {
       setLoading(false);
     }
@@ -47,15 +54,11 @@ export default function CompilerScreen() {
     setTokens([]);
     setCompiled(false);
     setError('');
+    showToast.info('Workspace cleared');
   };
 
   return (
     <section className="panel p-6 sm:p-8 space-y-6">
-      <div>
-        <p className="text-sm font-medium text-blue-600">Plumb Compiler</p>
-        <h2 className="mt-1 text-2xl font-semibold text-zinc-900">Workspace</h2>
-      </div>
-
       <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 shadow-lg">
         <div className="flex items-center justify-between border-b border-zinc-700/50 bg-zinc-800/80 px-4 py-2">
           <span className="font-mono text-xs text-zinc-400">main.plb</span>
@@ -94,47 +97,50 @@ export default function CompilerScreen() {
       )}
 
       {compiled && (
-        <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 shadow-lg">
-          <div className="flex items-center justify-between border-b border-zinc-700/50 bg-zinc-800/80 px-4 py-2.5">
-            <span className="font-mono text-xs font-semibold text-zinc-300">Generated Tokens</span>
-            <span className="font-mono text-[11px] text-zinc-500">{tokens.length} token(s)</span>
-          </div>
-
-          {tokens.length === 0 ? (
-            <p className="p-4 font-mono text-xs text-zinc-500">No tokens produced.</p>
-          ) : (
-            <div className="max-h-72 overflow-x-auto">
-              <table className="w-full border-collapse text-left font-mono text-xs">
-                <thead>
-                  <tr className="border-b border-zinc-800 text-zinc-400">
-                    <th className="px-4 py-2.5 font-medium">#</th>
-                    <th className="px-4 py-2.5 font-medium">Type</th>
-                    <th className="px-4 py-2.5 font-medium">Lexeme (Value)</th>
-                    <th className="px-4 py-2.5 font-medium">Line</th>
-                    <th className="px-4 py-2.5 font-medium">Col</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-800">
-                  {tokens.map((tok, idx) => (
-                    <tr key={idx} className="hover:bg-zinc-800/40">
-                      <td className="px-4 py-2 text-zinc-500">{idx + 1}</td>
-                      <td
-                        className={`px-4 py-2 font-bold ${
-                          TOKEN_COLORS[tok.type] || 'text-blue-400'
-                        }`}
-                      >
-                        {tok.type}
-                      </td>
-                      <td className="break-all px-4 py-2 text-amber-300">{tok.value}</td>
-                      <td className="px-4 py-2 text-zinc-400">{tok.line}</td>
-                      <td className="px-4 py-2 text-zinc-400">{tok.column}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <>
+        <span className='text-blue-900 text-lg font-bold  mt-10'>Lexer</span>
+          <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 shadow-lg">
+            <div className="flex items-center justify-between border-b border-zinc-700/50 bg-zinc-800/80 px-4 py-2.5">
+              <span className="font-mono text-xs font-semibold text-zinc-300">Generated Tokens</span>
+              <span className="font-mono text-[11px] text-zinc-500">{tokens.length} token(s)</span>
             </div>
-          )}
-        </div>
+
+            {tokens.length === 0 ? (
+              <p className="p-4 font-mono text-xs text-zinc-500">No tokens produced.</p>
+            ) : (
+              <div className="max-h-72 overflow-x-auto">
+                <table className="w-full border-collapse text-left font-mono text-xs">
+                  <thead>
+                    <tr className="border-b border-zinc-800 text-zinc-400">
+                      <th className="px-4 py-2.5 font-medium">#</th>
+                      <th className="px-4 py-2.5 font-medium">Type</th>
+                      <th className="px-4 py-2.5 font-medium">Lexeme (Value)</th>
+                      <th className="px-4 py-2.5 font-medium">Line</th>
+                      <th className="px-4 py-2.5 font-medium">Col</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800">
+                    {tokens.map((tok, idx) => (
+                      <tr key={idx} className="hover:bg-zinc-800/40">
+                        <td className="px-4 py-2 text-zinc-500">{idx + 1}</td>
+                        <td
+                          className={`px-4 py-2 font-bold ${TOKEN_COLORS[tok.type] || 'text-blue-400'
+                            }`}
+                        >
+                          {tok.type}
+                        </td>
+                        <td className="break-all px-4 py-2 text-amber-300">{tok.value}</td>
+                        <td className="px-4 py-2 text-zinc-400">{tok.line}</td>
+                        <td className="px-4 py-2 text-zinc-400">{tok.column}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </>
+
       )}
     </section>
   );

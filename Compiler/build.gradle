@@ -20,19 +20,14 @@ java {
     }
 }
 
-// ---------------------------------------------------------------------------
-// 1. Where the generated lexer goes (a build artifact, not checked in).
-// ---------------------------------------------------------------------------
+
 def generatedLexerDir = layout.buildDirectory.dir('generated/jflex/java')
 
-// ---------------------------------------------------------------------------
-// 2. generateLexer: plumb.jflex  ->  PlumbLexer.java
-// ---------------------------------------------------------------------------
+
 tasks.register('generateLexer', JavaExec) {
     group = 'build'
     description = 'Generates PlumbLexer.java from src/main/Jflex/plumb.jflex'
 
-    // Re-run only when the grammar changes.
     inputs.file('src/main/Jflex/plumb.jflex')
     outputs.dir(generatedLexerDir)
 
@@ -45,9 +40,7 @@ tasks.register('generateLexer', JavaExec) {
     }
 }
 
-// ---------------------------------------------------------------------------
-// 3. Compile: hand-written Java (src/main/java) + the generated lexer.
-// ---------------------------------------------------------------------------
+
 sourceSets {
     main {
         java {
@@ -56,14 +49,10 @@ sourceSets {
     }
 }
 
-// compileJava must wait for the lexer to be generated first.
 tasks.named('compileJava') {
     dependsOn 'generateLexer'
 }
 
-// ---------------------------------------------------------------------------
-// 4. Optional: copy dependency jars into lib/ for manual javac / java -cp usage.
-// ---------------------------------------------------------------------------
 tasks.register('copyLibs', Copy) {
     group = 'build'
     description = 'Copies dependency jars into lib/ for manual commands'
@@ -71,9 +60,7 @@ tasks.register('copyLibs', Copy) {
     into layout.projectDirectory.dir('lib')
 }
 
-// ---------------------------------------------------------------------------
-// 5. `gradle run --args="<plumb code>"` runs LexerRunner directly.
-// ---------------------------------------------------------------------------
+
 application {
     mainClass = 'LexerRunner'
 }
